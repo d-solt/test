@@ -1,20 +1,20 @@
-name: CI/CD for Static Website
+name: CI/CD for Static Website #имя workflow,отображается в actions
 
-on:
-  push:
-    branches: [ main ]
+on: #определяет события запуска
+  push: #запускает при пуше в репозиторий
+    branches: [ main ] #запускается только если пуш был в main
 
-jobs:
-  deploy:
-    runs-on: ubuntu-latest
-    permissions:
+jobs: #блок заданий, выполн.параллельно;можно писать с зависимостями через needs
+  deploy: #имя задания
+    runs-on: ubuntu-latest #указывает вритуальную машину (windows-latest/macos-latest)
+    permissions: #права GITHUB_TOKEN: при запуске job автоматически создает временный токен
       contents: write  
-    steps:
-    - name: Checkout code
-      uses: actions/checkout@v3
+    steps: #шаги; шаг упал - следующий не выполняется
+    - name: Checkout code #клонирует репозиторий в рабочую директорию
+      uses: actions/checkout@v3 #использование готового action
       
-    - name: Deploy to GitHub Pages
+    - name: Deploy to GitHub Pages #публикует файлы из указанной папки в ветку gh-pages
       uses: peaceiris/actions-gh-pages@v3
-      with:
+      with: #передает токен в action
         github_token: ${{ secrets.GITHUB_TOKEN }}
-        publish_dir: ./
+        publish_dir: ./ #клонирование всего кода
